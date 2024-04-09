@@ -1,0 +1,14 @@
+spring:
+    application:
+        name: schedule-backend
+    datasource:
+        url: jdbc:postgresql://localhost:5432/backend_schedule
+        username: postgres
+        password: root
+    jpa:
+        hibernate:
+            ddl-auto: update
+
+server:
+    error:
+        include-stacktrace: on_param
