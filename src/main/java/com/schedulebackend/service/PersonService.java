@@ -30,15 +30,16 @@ public class PersonService {
     public Person createPerson(PersonDTO personDTO) {
         Person person = new Person();
         person.copyFromDTO(personDTO);
+        personRepository.save(person);
 
         setPersonAddress(personDTO, person);
         setPersonPhone(personDTO, person);
 
-        return personRepository.save(person);
+        return getPersonByGuid(person.getGuid());
     }
 
     public void setPersonAddress(PersonDTO personDTO, Person person) {
-        if(!personDTO.getAddress().isEmpty()) {
+        if (!personDTO.getAddress().isEmpty()) {
             personDTO.getAddress()
                     .forEach((item) -> {
                         AddressDTO addressDTO = new AddressDTO(
@@ -57,7 +58,7 @@ public class PersonService {
     }
 
     public void setPersonPhone(PersonDTO personDTO, Person person) {
-        if(!personDTO.getPhone().isEmpty()) {
+        if (!personDTO.getPhone().isEmpty()) {
             personDTO.getPhone()
                     .forEach((item) -> {
                         PhoneDTO phoneDTO = new PhoneDTO(
