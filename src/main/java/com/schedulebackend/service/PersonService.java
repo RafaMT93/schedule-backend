@@ -79,4 +79,8 @@ public class PersonService {
     public void deletePerson(String guid) {
         personRepository.deleteById(guid);
     }
+
+    public List<Person> getPersonByName(String name) {
+        return personRepository.getPersonByNameContaining(name);
+    }
 }
