@@ -30,7 +30,11 @@ public class AddressController {
     @GetMapping(path = "/{guid}")
     public ResponseEntity<Address> getAddressByGuid(@PathVariable String guid) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(addressService.getAddressByGuid(guid));
+        try {
+            return ResponseEntity.ok(addressService.getAddressByGuid(guid));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PostMapping
@@ -49,7 +53,16 @@ public class AddressController {
     @PutMapping
     public ResponseEntity<Void> updateAddress(@RequestBody AddressDTO addressDTO) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        addressService.replace(addressDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            Address find = addressService.getAddressByGuid(addressDTO.getGuid());
+            if (find == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            addressService.replace(addressDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

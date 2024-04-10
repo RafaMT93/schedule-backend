@@ -30,7 +30,11 @@ public class PhoneController {
     @GetMapping(path = "/{guid}")
     public ResponseEntity<Phone> getPhone(@PathVariable String guid) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(phoneService.getPhoneByGuid(guid));
+        try {
+            return ResponseEntity.ok(phoneService.getPhoneByGuid(guid));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PostMapping
@@ -49,7 +53,17 @@ public class PhoneController {
     @PutMapping
     private ResponseEntity<Void> updatePhone(@RequestBody PhoneDTO phoneDTO) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        phoneService.replacePhone(phoneDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            Phone find = phoneService.getPhoneByGuid(phoneDTO.getGuid());
+
+            if (find == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            phoneService.replacePhone(phoneDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -30,7 +30,21 @@ public class PersonController {
     @GetMapping(path = "/{guid}")
     public ResponseEntity<Person> getPerson(@PathVariable String guid) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(personService.getPersonByGuid(guid));
+        try {
+            return ResponseEntity.ok(personService.getPersonByGuid(guid));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping(path = "/find")
+    public ResponseEntity<List<Person>> getPersonByName(@RequestParam(name = "name", required = false) String name) {
+        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        try {
+            return ResponseEntity.ok(personService.getPersonByName(name));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PostMapping
@@ -50,8 +64,18 @@ public class PersonController {
     @PutMapping
     public ResponseEntity<Void> updatePerson(@RequestBody PersonDTO personDTO) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        personService.replacePerson(personDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            Person find = personService.getPersonByGuid(personDTO.getGuid());
+
+            if (find == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            personService.replacePerson(personDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
