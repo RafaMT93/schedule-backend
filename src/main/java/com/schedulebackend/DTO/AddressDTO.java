@@ -1,7 +1,12 @@
 package com.schedulebackend.DTO;
 
+import com.schedulebackend.model.Person;
 import com.schedulebackend.model.enums.StreetType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class AddressDTO {
     private String guid;
 
@@ -19,9 +24,12 @@ public class AddressDTO {
 
     private String country;
 
+    private Person person;
+
     public AddressDTO() {}
 
-    public AddressDTO(StreetType streetType, String street, Integer number, String city, String state, String zip, String country) {
+    public AddressDTO(StreetType streetType, String street, Integer number, String city, String state, String zip, String country, Person person) {
+        this();
         this.streetType = streetType;
         this.street = street;
         this.number = number;
@@ -29,74 +37,12 @@ public class AddressDTO {
         this.state = state;
         this.zip = zip;
         this.country = country;
+        this.person = person;
     }
 
-    public AddressDTO(StreetType streetType, String street, Integer number, String city, String state, String zip, String country, String guid) {
-        this(streetType, street, number, city, state, zip, country);
+    public AddressDTO(StreetType streetType, String street, Integer number, String city, String state, String zip, String country, Person person, String guid) {
+        this(streetType, street, number, city, state, zip, country, person);
         this.guid = guid;
     }
 
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
-    public StreetType getStreetType() {
-        return streetType;
-    }
-
-    public void setStreetType(StreetType streetType) {
-        this.streetType = streetType;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 }

@@ -1,18 +1,22 @@
 package com.schedulebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.schedulebackend.DTO.AddressDTO;
 import com.schedulebackend.model.enums.StreetType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Setter
+@Getter
 @Entity
+@Table(name = "TB_ADDRESS")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "address_guid")
     private String guid;
 
     private StreetType streetType;
@@ -29,6 +33,11 @@ public class Address {
 
     private String country;
 
+    @ManyToOne
+    @JoinColumn(name = "person_guid")
+    @JsonIgnore
+    private Person person;
+
     public Address(){}
 
     public Address(String guid, StreetType streetType, String street, Integer number, String city, String state, String zip, String country){
@@ -39,70 +48,6 @@ public class Address {
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.country = country;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
-    public StreetType getStreetType() {
-        return streetType;
-    }
-
-    public void setStreetType(StreetType streetType) {
-        this.streetType = streetType;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
         this.country = country;
     }
 
@@ -135,5 +80,6 @@ public class Address {
         this.state = dto.getState();
         this.zip = dto.getZip();
         this.country = dto.getCountry();
+        this.person = dto.getPerson();
     }
 }
