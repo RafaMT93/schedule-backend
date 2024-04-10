@@ -34,7 +34,7 @@ public class PhoneController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Phone>> createPhone(@RequestBody PhoneDTO phoneDTO) {
+    public ResponseEntity<Phone> createPhone(@RequestBody PhoneDTO phoneDTO) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(phoneService.createPhone(phoneDTO));
     }

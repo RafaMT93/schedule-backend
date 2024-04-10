@@ -22,11 +22,10 @@ public class PhoneService {
                 .orElseThrow(() -> new RuntimeException("Phone not found"));
     }
 
-    public List<Phone> createPhone(PhoneDTO phoneDTO) {
+    public Phone createPhone(PhoneDTO phoneDTO) {
         Phone phone = new Phone();
         phone.copyFromDTO(phoneDTO);
-        phoneRepository.save(phone);
-        return getAllPhones();
+        return phoneRepository.save(phone);
     }
 
     public void replacePhone(PhoneDTO phoneDTO) {

@@ -24,11 +24,10 @@ public class AddressService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public List<Address> createAddress(AddressDTO addressDTO) {
+    public Address createAddress(AddressDTO addressDTO) {
         Address address = new Address();
         address.copyFromDTO(addressDTO);
-        addressRepository.save(address);
-        return getAllAddress();
+        return addressRepository.save(address);
     }
 
     public void replace(AddressDTO addressDTO) {

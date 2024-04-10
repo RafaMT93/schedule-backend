@@ -34,7 +34,7 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Address>> createAddress(@RequestBody AddressDTO addressDTO) {
+    public ResponseEntity<Address> createAddress(@RequestBody AddressDTO addressDTO) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(addressService.createAddress(addressDTO));
     }
